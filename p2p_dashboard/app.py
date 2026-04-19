@@ -162,6 +162,7 @@ with st.sidebar:
         ("Step 5", "Goods Receipt",         "MIGO"),
         ("Step 6", "Invoice Verification",  "MIRO"),
         ("Step 7", "Payment Processing",    "F110"),
+        ("Step 8", "Analytics and Reports", "REPORT"),
     ]
 
     active_step = st.radio(
@@ -533,6 +534,9 @@ elif current_idx == 6:
         | P2P Cycle Status | **Complete** |
         """)
         st.balloons()
+
+# ── STEP 7: Analytics ─────────────────────────────────────────────
+elif current_idx == 8:
     
 # ─── Footer ───────────────────────────────────────────────────────────────────
 st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
