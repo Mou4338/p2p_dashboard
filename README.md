@@ -128,7 +128,6 @@ Payment Processing (F110)
 p2p_dashboard/
 │
 ├── app.py
-├── pages/
 │   ├── overview.py
 │   ├── purchase_requisition.py
 │   ├── purchase_order.py
@@ -137,8 +136,6 @@ p2p_dashboard/
 │   ├── vendor_payment.py
 │   └── process_guide.py
 │
-├── data/
-│   └── sample_data.py
 │
 └── requirements.txt
 ```
