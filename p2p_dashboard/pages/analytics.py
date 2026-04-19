@@ -9,6 +9,7 @@ from data.sample_data import (get_pr_data, get_po_data, get_gr_data,
                                get_invoice_data, get_payment_data, VENDORS)
 
 def show():
+    st.write("DEBUG: Analytics loaded")
     st.markdown('<div class="section-header">Analytics and Reports</div>', unsafe_allow_html=True)
 
     pr  = get_pr_data()
