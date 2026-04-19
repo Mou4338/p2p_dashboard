@@ -717,8 +717,9 @@ elif current_idx == 7:
             data=csv,
             file_name=f"{report_type.replace(' ', '_').lower()}.csv",
             mime="text/csv",
+            use_container_width=True
+        )
     
-
 # ─── Footer ───────────────────────────────────────────────────────────────────
 st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
 st.markdown(
