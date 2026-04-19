@@ -540,17 +540,6 @@ st.markdown(
     "</p>",
     unsafe_allow_html=True
 )
-import streamlit as st
-
-# Sidebar navigation
-page = st.sidebar.radio("Go to", [
-    "analytics"
-])
-
-# Routing
-if page == "analytics":
-    show()
-
 
 import streamlit as st
 import plotly.express as px
