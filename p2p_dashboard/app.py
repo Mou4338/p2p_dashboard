@@ -1,4 +1,6 @@
 import streamlit as st
+import pages.analytics
+st.write("IMPORT WORKED")
 
 st.set_page_config(
     page_title="P2P SAP Dashboard | ABC Manufacturing Ltd.",
