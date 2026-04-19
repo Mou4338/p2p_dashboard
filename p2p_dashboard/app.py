@@ -131,6 +131,6 @@ elif page == "Invoice Verification":
 elif page == "Vendor Payment":
     from pages.vendor_payment import show; show()
 elif page == "Analytics and Reports":
-    st.write("CLICK WORKING")
+    from pages.analytics import show; show()
 elif page == "P2P Process Guide":
     from pages.process_guide import show; show()
