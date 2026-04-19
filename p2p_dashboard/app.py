@@ -5,10 +5,6 @@ import plotly.express as px
 from datetime import date, timedelta
 import random
 import numpy as np
-import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from data.sample_data import (get_pr_data, get_po_data, get_gr_data,
-                               get_invoice_data, get_payment_data, VENDORS)
 
 # ─── Page Configuration ───────────────────────────────────────────────────────
 st.set_page_config(
@@ -538,27 +534,139 @@ elif current_idx == 6:
         """)
         st.balloons()
 
-# ── STEP 7: Analytics ─────────────────────────────────────────────
-elif current_idx == 8:
-    st.write("DEBUG: Analytics loaded")
-    st.markdown('<div class="section-header">Analytics and Reports</div>', unsafe_allow_html=True)
+# ── STEP 8: Analytics and Reports ─────────────────────────────────────────────
+elif current_idx == 7:
+    st.markdown("<div class='section-title'>Step 8 — Analytics and Reports</div>",
+                unsafe_allow_html=True)
+    st.caption("End-to-end P2P cycle performance metrics, spend analysis, and exportable reports for ZTECH Industries.")
 
-    pr  = get_pr_data()
-    po  = get_po_data()
-    gr  = get_gr_data()
-    inv = get_invoice_data()
-    pay = get_payment_data()
+    # ── Inline sample data ────────────────────────────────────────────────────
+    np.random.seed(42)
 
+    VENDORS = {
+        "V-1001": "ABC Suppliers",
+        "V-1002": "XYZ Traders",
+        "V-1003": "FastSupply Co.",
+        "V-1004": "Global Parts Ltd.",
+        "V-1005": "Prime Materials",
+    }
+    vendor_names = list(VENDORS.values())
+    vendor_keys  = list(VENDORS.keys())
+
+    MATERIALS = [
+        "Raw Steel Sheets", "Industrial Bearings", "Electronic Components",
+        "Hydraulic Oil", "Safety Equipment", "Copper Wire", "Fasteners", "Rubber Seals",
+    ]
+    UNITS = ["KG", "PC", "LTR", "MT", "BOX"]
+
+    def rand_date(start_days_ago=180, end_days_ago=0):
+        offset = random.randint(end_days_ago, start_days_ago)
+        return date.today() - timedelta(days=offset)
+
+    # Purchase Requisitions (30 rows)
+    pr_rows = []
+    for i in range(30):
+        v  = random.choice(vendor_names)
+        mat = random.choice(MATERIALS)
+        qty = random.randint(50, 1000)
+        price = random.randint(100, 600)
+        pr_rows.append({
+            "PR Number":    f"PR-{7000000 + i}",
+            "Material":     mat,
+            "Quantity":     qty,
+            "Unit":         random.choice(UNITS),
+            "Cost Center":  random.choice(["CC-PROD-01", "CC-MAINT-02", "CC-ADMIN-03"]),
+            "Est. Value (Rs)": qty * price,
+            "Status":       random.choice(["Open", "Released", "Converted to PO"]),
+            "Created On":   str(rand_date(180, 30)),
+        })
+    pr = pd.DataFrame(pr_rows)
+
+    # Purchase Orders (25 rows)
+    po_rows = []
+    for i in range(25):
+        vname = random.choice(vendor_names)
+        mat   = random.choice(MATERIALS)
+        qty   = random.randint(50, 800)
+        price = random.randint(100, 600)
+        po_val = qty * price
+        po_rows.append({
+            "PO Number":      f"PO-45{100000000 + i}",
+            "Vendor Name":    vname,
+            "Description":    mat,
+            "Quantity":       qty,
+            "Net Price (Rs)": price,
+            "PO Value (Rs)":  po_val,
+            "Delivery Date":  str(rand_date(60, 0)),
+            "Status":         random.choice(["Open", "Open", "Closed", "Closed", "Closed"]),
+            "Plant":          random.choice(["ZP01", "ZP02"]),
+        })
+    po = pd.DataFrame(po_rows)
+
+    # Goods Receipts (22 rows)
+    gr_rows = []
+    for i in range(22):
+        gr_rows.append({
+            "GR Number":  f"GR-50{100000 + i}",
+            "Vendor":     random.choice(vendor_names),
+            "Material":   random.choice(MATERIALS),
+            "Qty Received": random.randint(50, 800),
+            "GR Date":    str(rand_date(60, 0)),
+            "Storage Loc":random.choice(["ZSL1", "ZSL2"]),
+            "QC Status":  random.choice(["Unrestricted", "Unrestricted", "Quality Stock", "Blocked"]),
+        })
+    gr = pd.DataFrame(gr_rows)
+
+    # Invoices (20 rows)
+    inv_rows = []
+    for i in range(20):
+        amt = random.randint(50000, 500000)
+        inv_rows.append({
+            "Invoice No.":  f"INV-{2026000 + i}",
+            "Vendor Name":  random.choice(vendor_names),
+            "Amount (Rs)":  amt,
+            "Tax (Rs)":     int(amt * 0.18),
+            "Total (Rs)":   int(amt * 1.18),
+            "Invoice Date": str(rand_date(45, 0)),
+            "Status":       random.choice(["Posted", "Posted", "Posted", "Blocked", "In Review"]),
+        })
+    inv = pd.DataFrame(inv_rows)
+
+    # Payments (18 rows)
+    pay_rows = []
+    for i in range(18):
+        amt = random.randint(50000, 600000)
+        pay_rows.append({
+            "Payment Doc":  f"PAY-20{100000 + i}",
+            "Vendor Name":  random.choice(vendor_names),
+            "Amount (Rs)":  amt,
+            "Payment Date": str(rand_date(30, 0)),
+            "Bank":         random.choice(["HDFC — ZB01", "SBI — ZB02", "ICICI — ZB03"]),
+            "Status":       random.choice(["Cleared", "Cleared", "Cleared", "Overdue", "Overdue"]),
+        })
+    pay = pd.DataFrame(pay_rows)
+
+    # ── Tabs ──────────────────────────────────────────────────────────────────
     tab1, tab2, tab3 = st.tabs(["Executive Dashboard", "Spend Analysis", "Custom Reports"])
 
+    # ── Tab 1: Executive Dashboard ────────────────────────────────────────────
     with tab1:
         st.markdown("#### Executive Summary — P2P Key Performance Indicators")
 
-        np.random.seed(5)
-        months       = ["Oct'24", "Nov'24", "Dec'24", "Jan'25", "Feb'25", "Mar'25", "Apr'25"]
-        po_days      = np.random.randint(2, 8, 7)
-        inv_days     = np.random.randint(3, 10, 7)
-        pay_days     = np.random.randint(15, 35, 7)
+        # KPI row
+        k1, k2, k3, k4, k5 = st.columns(5)
+        k1.metric("Total PRs Raised",    len(pr))
+        k2.metric("Purchase Orders",     len(po))
+        k3.metric("Goods Receipts",      len(gr))
+        k4.metric("Invoices Posted",     len(inv))
+        k5.metric("Payments Cleared",    len(pay[pay["Status"] == "Cleared"]))
+
+        st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
+
+        months   = ["Oct'24", "Nov'24", "Dec'24", "Jan'25", "Feb'25", "Mar'25", "Apr'25"]
+        po_days  = np.random.randint(2, 8, 7)
+        inv_days = np.random.randint(3, 10, 7)
+        pay_days = np.random.randint(15, 35, 7)
 
         col1, col2 = st.columns(2)
         with col1:
@@ -593,7 +701,7 @@ elif current_idx == 8:
                 "Purchase Orders",
                 "Goods Receipts",
                 "Invoices Posted",
-                "Payments Made"
+                "Payments Made",
             ]
             fig3 = go.Figure(go.Funnel(
                 y=funnel_labs, x=funnel_vals,
@@ -604,10 +712,10 @@ elif current_idx == 8:
             st.plotly_chart(fig3, use_container_width=True)
 
         with col4:
-            vendors  = list(set(gr["Vendor"].tolist()))[:5]
-            ontime   = np.random.randint(70, 98, 5)
+            top_vendors = vendor_names[:5]
+            ontime      = np.random.randint(70, 98, 5)
             fig4 = go.Figure(go.Bar(
-                x=ontime, y=vendors, orientation='h',
+                x=ontime, y=top_vendors, orientation='h',
                 marker=dict(color=[
                     "#28A745" if v > 85 else "#FFC107" if v > 75 else "#DC3545"
                     for v in ontime
@@ -619,6 +727,7 @@ elif current_idx == 8:
                                xaxis=dict(range=[0, 100]))
             st.plotly_chart(fig4, use_container_width=True)
 
+    # ── Tab 2: Spend Analysis ─────────────────────────────────────────────────
     with tab2:
         st.markdown("#### Spend Analysis")
 
@@ -646,9 +755,9 @@ elif current_idx == 8:
         st.markdown("#### Price Variance Analysis — PO vs Invoice")
         np.random.seed(7)
         variance_data = pd.DataFrame({
-            "Material":          po["Description"].head(8).values,
-            "PO Price (Rs)":     po["Net Price (Rs)"].head(8).values,
-            "Invoice Price (Rs)":po["Net Price (Rs)"].head(8).values * np.random.uniform(0.95, 1.08, 8),
+            "Material":           po["Description"].head(8).values,
+            "PO Price (Rs)":      po["Net Price (Rs)"].head(8).values,
+            "Invoice Price (Rs)": po["Net Price (Rs)"].head(8).values * np.random.uniform(0.95, 1.08, 8),
         })
         variance_data["Variance (Rs)"] = (
             variance_data["Invoice Price (Rs)"] - variance_data["PO Price (Rs)"]
@@ -678,6 +787,7 @@ elif current_idx == 8:
                 use_container_width=True, height=320
             )
 
+    # ── Tab 3: Custom Reports ─────────────────────────────────────────────────
     with tab3:
         st.markdown("#### Custom Reports — Export as CSV")
 
@@ -690,11 +800,11 @@ elif current_idx == 8:
         ])
 
         if report_type == "Open Purchase Orders":
-            data = po[po.Status == "Open"]
+            data = po[po["Status"] == "Open"]
         elif report_type == "Blocked Invoices":
-            data = inv[inv.Status == "Blocked"]
+            data = inv[inv["Status"] == "Blocked"]
         elif report_type == "Overdue Payments":
-            data = pay[pay.Status == "Overdue"]
+            data = pay[pay["Status"] == "Overdue"]
         elif report_type == "Full P2P Document Register":
             data = pd.concat([
                 pr.rename(columns={"PR Number": "Doc No"}).assign(Document_Type="PR"),
@@ -702,11 +812,11 @@ elif current_idx == 8:
             ], ignore_index=True)
         else:
             data = pd.DataFrame({
-                "Vendor":               list(VENDORS.values()),
-                "POs Raised":           [len(po[po["Vendor Name"] == v]) for v in VENDORS.values()],
-                "Invoices":             [len(inv[inv["Vendor Name"] == v]) for v in VENDORS.values()],
-                "Avg Payment Days":     np.random.randint(25, 45, len(VENDORS)),
-                "On-Time Delivery %":   np.random.randint(70, 98, len(VENDORS)),
+                "Vendor":             vendor_names,
+                "POs Raised":         [len(po[po["Vendor Name"] == v]) for v in vendor_names],
+                "Invoices":           [len(inv[inv["Vendor Name"] == v]) for v in vendor_names],
+                "Avg Payment Days":   np.random.randint(25, 45, len(vendor_names)),
+                "On-Time Delivery %": np.random.randint(70, 98, len(vendor_names)),
             })
 
         st.dataframe(data, use_container_width=True, height=350)
@@ -717,9 +827,9 @@ elif current_idx == 8:
             data=csv,
             file_name=f"{report_type.replace(' ', '_').lower()}.csv",
             mime="text/csv",
-            use_container_width=True
+            use_container_width=True,
         )
-    
+
 # ─── Footer ───────────────────────────────────────────────────────────────────
 st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
 st.markdown(
