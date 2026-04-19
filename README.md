@@ -1,14 +1,11 @@
 
-
-# SAP Procure-to-Pay (P2P) Dashboard — Full Purchasing Cycle
+# SAP Procure-to-Pay (P2P) Simulation Dashboard
 
 ## Project Overview
 
-This project demonstrates the complete **Procure-to-Pay (P2P) cycle** in SAP Materials Management (MM) using an interactive simulation dashboard built with Python and Streamlit.
+This project is an interactive simulation of the **SAP Procure-to-Pay (P2P) process** built using Python and Streamlit. It replicates the complete purchasing lifecycle followed in SAP Materials Management (MM), from Purchase Requisition to Vendor Payment, along with analytics and reporting.
 
-It covers the end-to-end procurement process from **Purchase Requisition to Vendor Payment**, including real-time analytics and reporting.
-
-The project is designed as a capstone implementation for SAP MM, integrating business process understanding with a working application.
+The application provides a step-by-step walkthrough of the P2P cycle with real-time inputs, simulated data, and visual dashboards.
 
 ---
 
@@ -18,27 +15,22 @@ The project is designed as a capstone implementation for SAP MM, integrating bus
 
 ---
 
-## GitHub Repository
+## Key Features
 
-[https://github.com/Mou4338/p2p_dashboard.git](https://github.com/Mou4338/p2p_dashboard.git)
-
----
-
-## Company Scenario
-
-ZTECH Industries Pvt. Ltd. (fictitious)
-
-* Company Code: ZT01
-* Plant: ZP01 (Bhubaneswar)
-* Purchase Organization: ZPO1
-* Industry: Manufacturing
-* Currency: INR
-
-The system simulates procurement of raw materials (e.g., steel sheets) with complete SAP document flow and accounting impact.
+* Complete 8-step P2P process simulation
+* Interactive UI with step-based navigation
+* Real-time data entry and processing
+* Vendor evaluation using composite scoring
+* Automated GST calculation (18%)
+* Three-way matching (PO, GR, Invoice)
+* Financial postings simulation (FI integration)
+* Analytics dashboard with charts and KPIs
+* Exportable reports in CSV format
+* Clean SAP-style user interface
 
 ---
 
-## Procure-to-Pay (P2P) Process Flow
+## Process Flow Covered
 
 1. Purchase Requisition (ME51N)
 2. Request for Quotation (ME41 / ME47)
@@ -46,23 +38,8 @@ The system simulates procurement of raw materials (e.g., steel sheets) with comp
 4. Purchase Order (ME21N)
 5. Goods Receipt (MIGO)
 6. Invoice Verification (MIRO)
-7. Payment Processing (F110)
-
-The Purchase Order acts as the central document linking all stages.
-
----
-
-## Key Features
-
-* Complete 7-step P2P simulation
-* Interactive dashboard built with Streamlit
-* Vendor evaluation using composite scoring model
-* Real-time data visualization using Plotly
-* GST (18%) tax calculation integrated
-* Three-way matching (PO, GR, Invoice)
-* Automated financial flow representation
-* Exportable reports (CSV)
-* Clean UI structured like SAP process flow
+7. Payment Processing (F110 / F-53)
+8. Analytics and Reports
 
 ---
 
@@ -74,25 +51,34 @@ The Purchase Order acts as the central document linking all stages.
 * NumPy
 * Plotly
 
-SAP Concepts Covered:
+---
+
+## SAP Concepts Simulated
 
 * SAP MM (Procurement lifecycle)
-* SAP FI (Accounting integration)
-* SAP SD (Master data alignment)
-* SAP ABAP (Custom logic simulation)
+* SAP FI (Accounting postings)
+* Three-way matching (PO, GR, Invoice)
+* Vendor evaluation and scoring
+* GST tax calculation
+* Document flow tracking
 
 ---
 
-## System Architecture
+## Application Structure
 
-* Frontend: Streamlit UI
-* Backend: Python-based simulation logic
-* Data Layer: Sample datasets simulating SAP tables
-* Visualization: Plotly charts and dashboards
+The application is built as a single Streamlit app with sidebar-based navigation across all P2P steps.
+
+Main components include:
+
+* Sidebar navigation for process steps
+* Dynamic forms for each transaction
+* Real-time calculations and validations
+* Data tables and visual dashboards
+* Analytics module with KPIs and reports
 
 ---
 
-## Financial Flow (Accounting Logic)
+## Financial Flow Logic
 
 Goods Receipt (MIGO)
 
@@ -112,33 +98,16 @@ Payment Processing (F110)
 
 ---
 
-## Business Value
+## Analytics and Reporting
 
-* Eliminates manual procurement tracking
-* Ensures real-time stock and financial updates
-* Prevents duplicate payments through three-way match
-* Improves vendor selection with data-driven scoring
-* Maintains audit-ready document flow
+The analytics module provides:
 
----
-
-## Folder Structure
-
-```
-p2p_dashboard/
-│
-├── app.py
-│   ├── overview.py
-│   ├── purchase_requisition.py
-│   ├── purchase_order.py
-│   ├── goods_receipt.py
-│   ├── invoice_verification.py
-│   ├── vendor_payment.py
-│   └── process_guide.py
-│
-│
-└── requirements.txt
-```
+* Procurement cycle time trends
+* Monthly spend analysis
+* Vendor performance metrics
+* P2P document funnel visualization
+* Price variance analysis
+* Custom report generation with CSV download
 
 ---
 
@@ -153,22 +122,14 @@ streamlit run app.py
 
 ---
 
-## Unique Highlights
+## Use Case
 
-* Full SAP P2P cycle mapped into a working application
-* Real-time integration logic between procurement and finance
-* GST-compliant pricing simulation
-* Vendor performance analytics
-* Interactive academic + industry-ready project
+This project is designed for:
 
----
-
-## Future Enhancements
-
-* SAP PP (Production Planning) integration
-* SAP HR payroll cost linkage
-* Advanced analytics using SAP Analytics Cloud (SAC)
-* Real database integration instead of sample data
+* SAP MM learning and demonstration
+* Academic projects and capstone submissions
+* Understanding end-to-end procurement flow
+* Showcasing SAP concepts in a working application
 
 ---
 
@@ -180,11 +141,9 @@ KIIT University
 
 ---
 
-## References
+## Notes
 
-* SAP Help Portal
-* SAP Community Network
-* KIIT University SAP Project Documentation
-* Purchasing and Supply Chain Management — Van Weele
-
+* This is a simulation and does not connect to a real SAP system
+* All data used is generated or sample-based
+* Designed for educational and demonstration purposes
 
