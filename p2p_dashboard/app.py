@@ -549,7 +549,6 @@ page = st.sidebar.radio("Go to", [
 
 # Routing
 if page == "analytics":
-    from pages.analytics import show
     show()
 
 
