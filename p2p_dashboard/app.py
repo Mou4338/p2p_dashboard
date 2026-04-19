@@ -1,6 +1,4 @@
 import streamlit as st
-import pages.analytics
-st.write("IMPORT WORKED")
 
 st.set_page_config(
     page_title="P2P SAP Dashboard | ABC Manufacturing Ltd.",
@@ -133,6 +131,6 @@ elif page == "Invoice Verification":
 elif page == "Vendor Payment":
     from pages.vendor_payment import show; show()
 elif page == "Analytics and Reports":
-    from pages.analytics import show; show()
+    st.write("CLICK WORKING")
 elif page == "P2P Process Guide":
     from pages.process_guide import show; show()
